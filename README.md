@@ -1,5 +1,5 @@
 # ESO_bot
-open source raid bot
+open source raid bot 
 ESO Bot by Keiaos Documentation (or at least an attempt)
 Due to somewhat popular demand, here is an “open source” version of the raid bot I created for ETC. It doesn’t do anything too fancy other than handle raid signups. There are no channel restrictions because I wanted to make this as simple as possible but anyone is welcome to edit the code to fit their needs. This bot uses text files to hold data because it does not require a database (yay!) and to make editing easier for those in control of the sign up process. The files are found inside the debug folder of the bot, config.txt and defaults.txt are in Debug and the files generated from signups are inside the raids folder inside the Debug folder. IF YOU MOVE OR RENAME THESE FILES, you must go into the code and change their file paths in the commands and bot initialization to ensure that no errors occur.
 
