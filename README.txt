@@ -2,8 +2,12 @@
 open source raid bot
 
 Set up instructions:
-  -Open .sln in visual studio and build solution
-  -Move config.txt, defaults.txt, and the raids folder to Debug folder in solution
-  -Example.txt is a sample file of what signups will look like, delete when ready to use bot or use as test for commands
-  -Add bot token in config on same line as "token = "
-  -Change prefix if desired on same line as "prefix = "
+  -Go into \eso_bot\bin\Debug\ and find config.txt
+  -Insert bot token on same line as "token = "
+  -Change prefix if desired
+  -Make sure token and prefix are on separate lines, your config.txt should look like this:
+        token = your token here
+        prefix = !
+  -After saving config.txt, find and run eso_bot.exe
+  -Files created for raids will be put in \Debug\raids\
+  -Delete example.txt in raids folder
