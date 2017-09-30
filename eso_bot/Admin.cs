@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 
 namespace eso_bot
 {
@@ -70,6 +71,74 @@ namespace eso_bot
             }
 
             await ReplyAsync(sendmsg);
+        }
+        
+        [Command("rollcall")]
+        [Alias("rc")]
+        [Summary("Mentions users signed up for specified raid with a message that raid is forming.")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task RollCallCmd([Summary("Name of raid to call roll call for.")] string raid = null)
+        {
+            if (raid == null)
+            {
+                await ReplyAsync("Please enter the raid name with the command.");
+            }
+            else
+            {
+                string fileName = raid + ".txt";
+                fileName = Path.GetFullPath(fileName).Replace(fileName, "");
+                fileName = fileName + @"\raids\" + raid + ".txt";
+                if (!File.Exists(fileName))
+                {
+                    await ReplyAsync("Error: " + fileName + " does not exist.");
+                }
+                else
+                {
+                    string line = "";
+                    string sendmsg = "";
+                    try
+                    {
+                        StreamReader sr = new StreamReader(fileName);
+                        line = sr.ReadLine();
+                        if (line == null)
+                        {
+                            sendmsg = "No users signed up for " + raid + " raid.";
+                        }
+                        else
+                        {
+                            var guild = Context.Guild as SocketGuild;
+                            var users = guild.Users;
+                            int count = 0;
+                            while (line != null && count <= 11)
+                            {
+                                SocketUser player = null;
+                                try
+                                {
+                                    player = users.Where(x => x.Username == line).First() as SocketUser;
+                                }
+                                catch(Exception e)
+                                {
+                                    Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
+                                }
+                                if (player != null)
+                                {
+                                    sendmsg = sendmsg  + player.Mention + " ";
+                                    count++;
+                                }
+                                line = sr.ReadLine();
+                                line = sr.ReadLine();
+                            }
+                            sendmsg = sendmsg + "forming up for " + raid + "! Time to log in.";
+                        }
+                        await ReplyAsync(sendmsg);
+                        sr.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        await ReplyAsync("Exception: " + e.Message);
+                    }
+                }
+            }
         }
     }
 }
